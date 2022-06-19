@@ -2,13 +2,9 @@ const { Schema } = require('mongoose')
 
 const Employee = new Schema(
   {
-    name: { type: String, required: true },
-    current: { type: Boolean, required: true },
-    weekly_hours: { type: Number, required: true },
-    associated_pay: { type: Number, required: true },
-    taxes: { type: Number, required: true },
-    net_pay_per_week: { type: Number, required: true },
-    payment_status: { type: Boolean, required: true }
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    status: { type: Schema.Types.ObjectId, ref: 'Status', required: true }
   },
   { timestamps: true }
 )
