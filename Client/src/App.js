@@ -1,4 +1,5 @@
 import './style/App.css'
+import axios from 'axios'
 import { Routes, Route, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Search from './components/Search'
@@ -13,6 +14,7 @@ import CreateSchedule from './pages/CreateSchedule'
 
 function App() {
   const BASE_URL = 'http://localhost:3001/api'
+  let { id } = useParams()
 
   // State for Employees
   const [allEmployees, setAllEmployees] = useState([])
@@ -26,6 +28,21 @@ function App() {
   const [employeeUpdate, setEmployeeUpdate] = useState(null)
   //delete Employee ==> deleteEmployee
   const [employeeDelete, setEmployeeDelete] = useState({})
+
+  const getSpecificEmployee = async () => {
+    let res = await axios.get(`${BASE_URL}/employee/${id}`)
+    setSpecificEmployee(res.data)
+    console.log(res, 'EMPLOYEES')
+  }
+
+  useEffect(() => {
+    getSpecificEmployee()
+  }, [])
+
+  // Payroll state
+
+  const [payroll, setPayroll] = useState([])
+  const [specificPayroll, setSpecificPayroll] = useState({})
 
   return (
     <div className="App">
@@ -56,7 +73,18 @@ function App() {
             element={<EmployeeProfile BASE_URL={BASE_URL} />}
           />
           <Route path="schedules" element={<Schedules BASE_URL={BASE_URL} />} />
-          <Route path="payroll" element={<Payroll BASE_URL={BASE_URL} />} />
+          <Route
+            path="payroll"
+            element={
+              <Payroll
+                BASE_URL={BASE_URL}
+                payroll={payroll}
+                setPayroll={setPayroll}
+                specificPayroll={specificPayroll}
+                setSpecificPayroll={setSpecificPayroll}
+              />
+            }
+          />
           <Route path="report" element={<Payroll BASE_URL={BASE_URL} />} />
           <Route
             path="payroll/:id"
