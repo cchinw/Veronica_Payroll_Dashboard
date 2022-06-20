@@ -6,15 +6,14 @@ const Payroll = new Schema(
       { type: Schema.Types.ObjectId, ref: 'Employee', required: true }
     ],
     isCurrent: { type: Boolean, required: true },
-    weekOf: {
+    weeklySchedule: {
       type: Schema.Types.ObjectId,
       ref: 'WeeklySchedule',
       required: true
     },
-    hourlyRate: { type: Number, required: false },
-    overtime: { type: Number, required: false },
-    grossAmount: { type: Number, required: true }, //total hours worked * weekly schedule hours
-    taxes: { type: Number, required: true },
+    payRate: [{ type: Schema.Types.ObjectId, ref: 'Payrate', required: true }],
+    grossAmount: { type: Number, required: true },
+    taxes: [{ type: Schema.Types.ObjectId, ref: 'Tax', required: true }],
     netAmount: { type: Number, required: true },
     isPaid: { type: Boolean, required: true }
   },

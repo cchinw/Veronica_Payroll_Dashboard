@@ -5,9 +5,7 @@ const PayRate = new Schema(
     employeeId: [
       { type: Schema.Types.ObjectId, ref: 'Employee', required: true }
     ],
-    hourlyRate: { type: Number, required: false },
-    overtime: { type: Number, required: false },
-    dateEffective: { type: Date, required: true }
+    hourlyRate: { type: Number, required: false }
   },
   { timestamps: true }
 )

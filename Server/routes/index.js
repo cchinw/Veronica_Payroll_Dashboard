@@ -20,11 +20,17 @@ router.put('/employee/:id', controllers.updateEmployeeDetail)
 //Router to Delete Employee
 router.delete('/employee/:id', controllers.deleteEmployee)
 
-// Router to Create Schedule
-router.post('/schedule', controllers.createWeeklySchedule)
+// Router to create daily schedule
+router.post('/dailyschedule', controllers.createDailySchedule)
 
-// Router to Update Schedule
-router.put('/schedule/:id', controllers.updateWeeklySchedule)
+// Router to Create weekly  Schedule
+router.post('/weeklyschedule', controllers.createWeeklySchedule)
+
+// Router to Update daily Schedule
+router.put('/dailyschedule/:id', controllers.updateWeeklySchedule)
+
+// Router to Update weekly Schedule
+router.put('/weeklyschedule/:id', controllers.updateWeeklySchedule)
 
 //Router to Delete Schedule
 
