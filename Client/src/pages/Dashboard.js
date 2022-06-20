@@ -1,7 +1,7 @@
 import Search from '../components/Search'
 
 const Dashboard = () => {
-  return <div className="dashboard">{/* <Search /> */}</div>
+  return <div className="dashboard"></div>
 }
 
 export default Dashboard

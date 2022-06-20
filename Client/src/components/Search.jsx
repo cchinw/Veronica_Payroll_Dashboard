@@ -17,6 +17,10 @@ import TextField from '@mui/material/TextField'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import BadgeIcon from '@mui/icons-material/Badge'
 import PaidIcon from '@mui/icons-material/Paid'
+import AssessmentIcon from '@mui/icons-material/Assessment'
+import DateRangeIcon from '@mui/icons-material/DateRange'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import PunchClockIcon from '@mui/icons-material/PunchClock'
 
 const drawerWidth = 240
 
@@ -28,37 +32,85 @@ export default function Search(props) {
     setMobileOpen(!mobileOpen)
   }
 
+  const [selectedIndex, setSelectedIndex] = useState(1)
+
+  const handleListItemClick = (e) => {
+    e.preventDefault()
+    setSelectedIndex(e.target.value)
+  }
+
   const drawer = (
     <div>
       <Toolbar />
       <TextField variant="outlined" color="secondary" label="Search..." />
       <Divider />
-      <List>
-        {['Dashboard', 'Employees', 'Payroll', 'Schedule'].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <DashboardIcon /> : <BadgeIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
+      <List component="nav" aria-label="main payroll folders">
+        <ListItemButton
+          selected={selectedIndex === 0}
+          onClick={(event) => handleListItemClick(event, 0)}
+        >
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
+        >
+          <ListItemIcon>
+            <BadgeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Employees" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
+        >
+          <ListItemIcon>
+            <DateRangeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Scheduler" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
+        >
+          <ListItemIcon>
+            <PaidIcon />
+          </ListItemIcon>
+          <ListItemText primary="Payroll" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
+        >
+          <ListItemIcon>
+            <AssessmentIcon />
+          </ListItemIcon>
+          <ListItemText primary="Report" />
+        </ListItemButton>
       </List>
       <Divider />
-      <List>
-        {['Add Employee', 'Make Schedule', 'Report'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 3 === 0 ? <DashboardIcon /> : <BadgeIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+      <List component="nav" aria-label="secondary mailbox folder">
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
+        >
+          <ListItemIcon>
+            <GroupAddIcon />
+          </ListItemIcon>
+          <ListItemText primary="Add Employees" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
+        >
+          <ListItemIcon>
+            <PunchClockIcon />
+          </ListItemIcon>
+          <ListItemText primary="Create Schedule" />
+        </ListItemButton>
       </List>
     </div>
   )
