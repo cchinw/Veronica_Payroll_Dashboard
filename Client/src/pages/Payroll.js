@@ -1,5 +1,5 @@
 const Payroll = () => {
-  return <div></div>
+  return <div className="payroll"></div>
 }
 
 export default Payroll
