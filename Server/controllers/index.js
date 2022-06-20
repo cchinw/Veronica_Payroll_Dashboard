@@ -182,6 +182,15 @@ const getSpecificPayrollReport = async (req, res) => {
   }
 }
 
+const getTaxRate = async (req, res) => {
+  try {
+    const tax = await Tax.find()
+    return res.status(201).send(tax)
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
+
 const calculatePay = async (req, res) => {
   try {
     const payroll = await new Payroll.findById(req.params.id)
@@ -194,7 +203,7 @@ const calculatePay = async (req, res) => {
     grossAmount.push(gross)
 
     let netAmount = []
-    let tax = payroll.taxes.taxPercentage
+    let tax = (payroll.taxes.taxPercentage / 100).toFixed(2)
     let net = gross - tax
     netAmount.push(net)
 
@@ -216,14 +225,15 @@ module.exports = {
   getEmployeeById, // route init
   updateEmployeeDetail, // route init
   deleteEmployee, // route init
-  createPayRate,
-  createStatus,
-  createDailySchedule,
-  createWeeklySchedule,
-  updateDailySchedule,
-  updateWeeklySchedule,
-  createPayroll,
-  getAllPayrollReports,
-  getSpecificPayrollReport,
-  calculatePay
+  createPayRate, //route init
+  createStatus, // route init
+  createDailySchedule, // route init
+  createWeeklySchedule, // route init
+  updateDailySchedule, // route init
+  updateWeeklySchedule, // route init
+  createPayroll, // route init
+  getAllPayrollReports, // route init
+  getSpecificPayrollReport, // route init
+  getTaxRate, //route init
+  calculatePay //route init
 }

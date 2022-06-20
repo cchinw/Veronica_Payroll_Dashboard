@@ -5,7 +5,11 @@ const Payroll = new Schema(
     employeeId: [
       { type: Schema.Types.ObjectId, ref: 'Employee', required: true }
     ],
-    isCurrent: { type: Boolean, required: true },
+    isCurrent: {
+      type: Schema.Types.ObjectId,
+      ref: 'Status',
+      required: true
+    },
     weeklySchedule: {
       type: Schema.Types.ObjectId,
       ref: 'WeeklySchedule',

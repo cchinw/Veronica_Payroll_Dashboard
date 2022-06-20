@@ -4,11 +4,13 @@ const Employee = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    isCurrent: {
-      type: Schema.Types.ObjectId,
-      ref: 'Status',
-      required: false
-    }
+    isCurrent: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Status',
+        required: false
+      }
+    ]
   },
   { timestamps: true }
 )

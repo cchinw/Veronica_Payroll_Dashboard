@@ -20,6 +20,12 @@ router.put('/employee/:id', controllers.updateEmployeeDetail)
 //Router to Delete Employee
 router.delete('/employee/:id', controllers.deleteEmployee)
 
+// Router to create Pay Rate
+router.post('/payrate', controllers.createPayRate)
+
+// Router to create status
+router.post('/status', controllers.createStatus)
+
 // Router to create daily schedule
 router.post('/dailyschedule', controllers.createDailySchedule)
 
@@ -42,5 +48,11 @@ router.get('/payroll', controllers.getAllPayrollReports)
 
 // Router to get specific payroll reports
 router.get('/payroll/:id', controllers.getSpecificPayrollReport)
+
+//Router to get Tax Rate
+router.get('/tax', controllers.getSpecificPayrollReport)
+
+// Router to calculate pay
+router.put('/pay/:id', controllers.updateWeeklySchedule)
 
 module.exports = router
