@@ -15,18 +15,6 @@ import Paper from '@mui/material/Paper'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
-const [report, setReport] = useState([])
-const { id } = useParams()
-
-const getReport = async () => {
-  const response = await axios.get(`http://localhost:3001/api/payroll`)
-  const result = await axios.get(
-    `http://localhost:3001/api/${response.data}/${id}`
-  )
-  console.log(response, 'RESPONSEEEEE')
-  console.log(result, 'RESULTTTTT')
-}
-
 // function createData(firstName: string, lastName: string, isCurrent: Boolean) {
 //   return {
 //     firstName,
@@ -132,11 +120,7 @@ export default function Report() {
             <TableCell align="right">Protein&nbsp;(g)</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
+        <TableBody>hi</TableBody>
       </Table>
     </TableContainer>
   )

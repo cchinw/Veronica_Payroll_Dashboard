@@ -47,7 +47,26 @@ function App() {
       </header>
       <main style={{ marginLeft: 'auto', marginRight: 0 }}>
         <Routes>
-          <Route index element={<Dashboard BASE_URL={BASE_URL} />} />
+          <Route
+            index
+            element={
+              <Dashboard
+                BASE_URL={BASE_URL}
+                allEmployees={allEmployees}
+                setAllEmployees={setAllEmployees}
+                employee={employee}
+                setEmployee={setEmployee}
+                employeeUpdate={employeeUpdate}
+                employeeDelete={employeeDelete}
+                setEmployeeUpdate={setEmployeeUpdate}
+                setEmployeeDelete={setEmployeeDelete}
+                payroll={payroll}
+                setPayroll={setPayroll}
+                specificPayroll={specificPayroll}
+                setSpecificPayroll={setSpecificPayroll}
+              />
+            }
+          />
           <Route
             path="employees"
             element={

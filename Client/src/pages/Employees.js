@@ -25,19 +25,20 @@ export default function Employees(props) {
         </Button>
       </div>
       <div className="employee-container">
-        {props.allEmployees.map((employee) => (
-          <Container
-            className="child"
-            key={employee.id}
-            onClick={() => navigate(`/employee/${employee._id}`)}
-            style={{ border: `5px solid #0064f4` }}
-          >
-            <h3>
-              Full name: {employee.firstName} {employee.lastName}
-            </h3>
-            <h4>Current Employee: {employee.isCurrent.toString()}</h4>
-          </Container>
-        ))}
+        {props.allEmployees &&
+          props.allEmployees.map((employee) => (
+            <Container
+              className="child"
+              key={employee.id}
+              onClick={() => navigate(`/employee/${employee._id}`)}
+              style={{ border: `5px solid #0064f4` }}
+            >
+              <h3>
+                Full name: {employee.firstName} {employee.lastName}
+              </h3>
+              <h4>Current Employee: {employee.isCurrent.toString()}</h4>
+            </Container>
+          ))}
       </div>
     </div>
   )

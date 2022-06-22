@@ -17,8 +17,6 @@ const Payroll = (props) => {
     getAllPayroll()
   }, [])
 
-  console.log(props.allEmployees, 'EMPLOYEE PROPS')
-
   return (
     <div className="payroll">
       <h1>PAYROLL</h1>
@@ -33,19 +31,20 @@ const Payroll = (props) => {
         </Button>
       </div>
       <Container>
-        {props.payroll.map((pay) => (
-          <Container>
-            <Divider />
-            <div key={pay.id} onClick={() => navigate(`payroll/${pay._id}`)}>
-              <h4>Employee Id: {pay.employeeId}</h4>
-              <h4>Hours Worked (per week): {pay.weeklyHours}</h4>
-              <h4>Gross Amount: {pay.grossAmount} </h4>
-              <h4>Taxes: {pay.taxes}</h4>
-              <h4>Net Amount Paid per week: {pay.netAmount} </h4>
-            </div>
-            <Divider />
-          </Container>
-        ))}
+        {props.payroll &&
+          props.payroll.map((pay) => (
+            <Container>
+              <Divider />
+              <div key={pay.id} onClick={() => navigate(`payroll/${pay._id}`)}>
+                <h4>Employee Id: {pay.employeeId}</h4>
+                <h4>Hours Worked (per week): {pay.weeklyHours}</h4>
+                <h4>Gross Amount: {pay.grossAmount} </h4>
+                <h4>Taxes: {pay.taxes}</h4>
+                <h4>Net Amount Paid per week: {pay.netAmount} </h4>
+              </div>
+              <Divider />
+            </Container>
+          ))}
       </Container>
     </div>
   )
