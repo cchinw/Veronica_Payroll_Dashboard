@@ -32,6 +32,27 @@ input {
   color:#282c34 !important;
 }
 
+.carousel{
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  width: 70vw;
+  height: 30vw;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin: 0 0 5vh 0;
+}
+
+.child {
+  scroll-snap-align: start;
+  padding: 1rem;
+  margin: 10px;
+  text-align: center;
+  position: relative;
+  border-radius: 10px;
+  min-height: 10vh;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

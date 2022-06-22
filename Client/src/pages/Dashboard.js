@@ -4,13 +4,14 @@ import Payroll from './Payroll'
 import Schedules from './Schedules'
 import Report from './Report'
 import Search from '../components/Search'
-import { Divider } from '@mui/material'
+import { Box, Card, Divider, Paper } from '@mui/material'
 
 const Dashboard = (props) => {
   return (
-    <div className="dashboard">
-      <Container>
-        <div>
+    <Container>
+      <Box sx={{ minWidth: 275 }}>
+        <h1>Dashboard</h1>
+        <Card variant="outlined" square>
           <Employees
             BASE_URL={props.BASE_URL}
             allEmployees={props.allEmployees}
@@ -22,9 +23,8 @@ const Dashboard = (props) => {
             setEmployeeUpdate={props.setEmployeeUpdate}
             setEmployeeDelete={props.setEmployeeDelete}
           />
-        </div>
-        <Divider />
-        <div>
+        </Card>
+        <Paper>
           <Payroll
             payroll={props.payroll}
             setPayroll={props.setPayroll}
@@ -33,15 +33,23 @@ const Dashboard = (props) => {
             specificPayroll={props.specificPayroll}
             setSpecificPayroll={props.setSpecificPayroll}
           />
-        </div>
-        <div>
-          <Schedules />
-        </div>
-        {/* <div>
-          <Report />
-        </div> */}
-      </Container>
-    </div>
+        </Paper>
+        <Paper>
+          <Schedules
+            BASE_URL={props.BASE_URL}
+            allEmployees={props.allEmployees}
+            setAllEmployees={props.setAllEmployees}
+            allDailySchedule={props.allDailySchedule}
+            setAllDailySchedule={props.setAllDailySchedule}
+            allWeeklySchedule={props.allWeeklySchedule}
+            setAllWeeklySchedule={props.setAllWeeklySchedule}
+          />
+        </Paper>
+        {/* <Paper>
+            <Report />
+          </Paper> */}
+      </Box>
+    </Container>
   )
 }
 

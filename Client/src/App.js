@@ -12,6 +12,7 @@ import PayrollDetail from './components/PayrollDetail'
 import AddEmployee from './pages/AddEmployee'
 import CreateSchedule from './pages/CreateSchedule'
 import UpdatePayroll from './components/UpdatePayroll'
+import Test from './pages/Test'
 
 function App() {
   const BASE_URL = 'http://localhost:3001/api'
@@ -26,8 +27,11 @@ function App() {
   const [employeeDelete, setEmployeeDelete] = useState({})
 
   // Payroll state
-  const [payroll, setPayroll] = useState(null)
+  const [payroll, setPayroll] = useState([])
   const [specificPayroll, setSpecificPayroll] = useState({})
+
+  const [allDailySchedule, setAllDailySchedule] = useState({})
+  const [allWeeklySchedule, setAllWeeklySchedule] = useState([])
 
   const getEmployees = async () => {
     let res = await axios.get(`${BASE_URL}/employee`)
@@ -97,7 +101,20 @@ function App() {
               />
             }
           />
-          <Route path="schedules" element={<Schedules BASE_URL={BASE_URL} />} />
+          <Route
+            path="schedules"
+            element={
+              <Schedules
+                BASE_URL={BASE_URL}
+                allEmployees={allEmployees}
+                setAllEmployees={setAllEmployees}
+                allDailySchedule={allDailySchedule}
+                setAllDailySchedule={setAllDailySchedule}
+                allWeeklySchedule={allWeeklySchedule}
+                setAllWeeklySchedule={setAllWeeklySchedule}
+              />
+            }
+          />
           <Route
             path="payroll"
             element={
@@ -141,6 +158,7 @@ function App() {
               />
             }
           />
+          <Route path="test" element={<Test />} />
         </Routes>
       </main>
     </div>

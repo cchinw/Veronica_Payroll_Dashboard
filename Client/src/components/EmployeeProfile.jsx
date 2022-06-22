@@ -1,4 +1,4 @@
-import { Box, Button, Container, TableHead } from '@mui/material'
+import { Box, Button, Container, Divider, TableHead } from '@mui/material'
 import { useEffect } from 'react'
 import { useParams } from 'react-router'
 import axios from 'axios'
@@ -8,17 +8,17 @@ const EmployeeProfile = (props) => {
 
   useEffect(() => {
     const getSpecificEmployee = async () => {
-      let res = await axios.get(`${props.BASE_URL}/employee/${id}`)
-      props.setEmployee(res.data)
-    }
-    const getSpecificPayroll = async () => {
-      let res = await axios.get(`${props.BASE_URL}/payroll/${id}`)
-      console.log(res, 'SET SPECIFIC PAYROLL RES')
-      props.setSpecificPayroll(res.data)
+      let employeeProfileRes = await axios.get(
+        `${props.BASE_URL}/employee/${id}`
+      )
+      let payrollRes = await axios.get(`${props.BASE_URL}/payroll/${id}`)
+      props.setEmployee(employeeProfileRes.data)
+      props.setSpecificPayroll(payrollRes.data)
     }
     getSpecificEmployee()
-    getSpecificPayroll()
   }, [])
+
+  console.log(props.specificPayroll, 'SPECIFIC PAYROLL')
 
   return (
     <Container>
@@ -32,6 +32,15 @@ const EmployeeProfile = (props) => {
                 Employee Full Name:{' '}
                 {props.employee.firstName + ' ' + props.employee.lastName}
               </h4>
+              <h4>Current Employee: {props.employee.isCurrent}</h4>
+              <Divider />
+              <div>
+                <h2>Employee Payroll</h2>
+              </div>
+              <Divider />
+              <div>
+                <h2>WeeklySchedule</h2>
+              </div>
             </div>
           </Container>
         </Box>

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router'
-import { Container, Divider, Button } from '@mui/material'
+import { Container, Divider, Button, Box } from '@mui/material'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+import { DataGrid } from '@mui/x-data-grid'
+import { GridColDef } from '@mui/x-data-grid'
 
 const Payroll = (props) => {
   let navigate = useNavigate()
@@ -16,6 +18,25 @@ const Payroll = (props) => {
   useEffect(() => {
     getAllPayroll()
   }, [])
+
+  const [payrollFormFields, setPayrollFormFields] = useState({
+    employeeId: '',
+    weeklyHours: '',
+    grossAmount: 0,
+    taxes: 0,
+    netAmount: 0
+  })
+
+  const handlePayrollChange = (e) => {
+    setPayrollFormFields({
+      ...payrollFormFields,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSelected = (payroll) => {
+    setPayrollFormFields(payroll)
+  }
 
   return (
     <div className="payroll">

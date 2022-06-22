@@ -27,7 +27,7 @@ const CreateSchedule = (props) => {
     totalHours: 0
   })
 
-  const [selectedEmployee, setSelectedEmployee] = useState('employee')
+  const [selectedEmployee, setSelectedEmployee] = useState('Zara Naza')
 
   const handleDailyChange = (e) => {
     setDailySchedule({
@@ -122,7 +122,30 @@ const CreateSchedule = (props) => {
         autoComplete="off"
       ></Box>
       <Container>
-        <form className="forms">
+        <table>
+          <tr>
+            <th>Employee</th>
+            <th>Sunday</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+          </tr>
+          {props.allEmployees.map((employee) => (
+            <tr>
+              <th>{employee.firstName + ' ' + employee.lastName}</th>
+            </tr>
+          ))}
+          <tr>
+            <td>
+              <input type="date"></input>
+            </td>
+          </tr>
+        </table>
+
+        {/* <form className="forms">
           <TextField
             select
             label="Select Employee"
@@ -132,17 +155,18 @@ const CreateSchedule = (props) => {
             onChange={handleDailyChange}
             helperText="Please select an employee"
           >
-            {props.allEmployees.map((employee, i) => (
-              <MenuItem
-                onClick={() => {
-                  handleSelectEmployee(employee)
-                }}
-                key={i}
-                value={employee.firstName + ' ' + employee.lastName}
-              >
-                {employee.firstName + ' ' + employee.lastName}
-              </MenuItem>
-            ))}
+            {props.allEmployees &&
+              props.allEmployees.map((employee, i) => (
+                <MenuItem
+                  onClick={() => {
+                    handleSelectEmployee(employee)
+                  }}
+                  key={i}
+                  value={employee.firstName + ' ' + employee.lastName}
+                >
+                  {employee.firstName + ' ' + employee.lastName}
+                </MenuItem>
+              ))}
           </TextField>
           <div className="input-wrapper">
             <input
@@ -242,7 +266,7 @@ const CreateSchedule = (props) => {
           <Button onClick={handleSubmit} className="glow-on-hover-register">
             Create Weekly Schedule
           </Button>
-        </form>
+        </form> */}
       </Container>
     </div>
   )
