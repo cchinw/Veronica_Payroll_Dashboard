@@ -5,66 +5,66 @@ import { Button, Container } from '@mui/material'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
+import Divider from '@mui/material/Divider'
+import CreateSchedule from './CreateSchedule'
 
 const AddEmployee = (props) => {
   let navigate = useNavigate()
 
-  const [formValues, setFormValues] = useState({
+  const [employeeFormValues, setEmployeeFormValues] = useState({
     firstName: '',
     lastName: '',
-    isCurrent: '',
+    isCurrent: false
+  })
+  const [rate, setRate] = useState({
+    employeeId: '',
     hourlyRate: 0
   })
-  const [rate, setRate] = useState(0)
 
-  const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+  const handleEmployeeChange = (e) => {
+    setEmployeeFormValues({
+      ...employeeFormValues,
+      [e.target.name]: e.target.value
+    })
+  }
+  const handleRateChange = (e) => {
+    setRate({
+      ...rate,
+      hourlyRate: e.target.value
+    })
   }
 
   const handleSubmit = async (e) => {
+    e.preventDefault()
+
     const addNewEmployee = async () => {
       const employeeData = {
-        firstName: '',
-        lastName: '',
-        isCurrent: false
+        firstName: employeeFormValues.firstName,
+        lastName: employeeFormValues.lastName,
+        isCurrent: employeeFormValues.isCurrent
       }
 
-      const employeeRes = await axios
-        .post(`${props.BASE_URL}/employee`, employeeData)
-        .then(function (res) {
-          if (res.status === 200) {
-            setRate(employeeRes.data)
-          }
-        })
+      const employeeRes = await axios.post(
+        `${props.BASE_URL}/employee`,
+        employeeData
+      )
+      setRate({ ...rate, employeeId: employeeRes.data._id })
     }
 
     const setEmployeeRate = async () => {
-      const rateData = {
-        hourlyRate: 0
-      }
-
-      const payRate = await axios
-        .post(`${props.BASE_URL}/payrate`, rateData)
-        .then(function (res) {
-          if (res.status === 200) {
-            setRate(payRate.data)
-          }
-        })
+      const payRate = await axios.post(`${props.BASE_URL}/payrate`, rate)
     }
 
     e.preventDefault()
-    await addNewEmployee({
-      firstName: formValues.firstName,
-      lastName: formValues.lastName,
-      isCurrent: formValues.isCurrent
-    })
-    await setEmployeeRate({
-      hourlyRate: formValues.hourlyRate
-    })
-    setFormValues({
+    await addNewEmployee()
+    await setEmployeeRate()
+    setEmployeeFormValues({
       firstName: '',
       lastName: '',
-      isCurrent: '',
+      isCurrent: false
+    })
+    setRate({
+      employeeId: '',
       hourlyRate: 0
     })
     navigate('/employees')
@@ -86,50 +86,53 @@ const AddEmployee = (props) => {
         autoComplete="off"
       >
         <div>
-          <form className="forms" onSubmit={handleSubmit}>
+          <form className="forms">
             <div className="input-wrapper">
               <input
-                onChange={handleChange}
+                onChange={handleEmployeeChange}
                 name="firstName"
                 type="text"
                 placeholder="First Name"
-                value={formValues.firstName}
+                value={employeeFormValues.firstName}
                 required
               />
             </div>
             <div className="input-wrapper">
               <input
-                onChange={handleChange}
+                onChange={handleEmployeeChange}
                 name="lastName"
                 type="text"
                 placeholder="Last Name"
-                value={formValues.lastName}
+                value={employeeFormValues.lastName}
                 required
               />
             </div>
+            <Divider />
             <div className="input-wrapper">
               <label for="status">Currently Employed?</label>
               <select
-                onChange={handleChange}
+                onChange={handleEmployeeChange}
                 name="isCurrent"
-                value={formValues.isCurrent}
+                value={employeeFormValues.isCurrent}
                 required
               >
-                <option>Yes</option>
-                <option>No</option>
+                <option>True</option>
+                <option>False</option>
               </select>
             </div>
             <div className="input-wrapper">
               <input
-                onChange={handleChange}
+                onChange={handleRateChange}
                 type="number"
                 name="payrate"
                 placeholder="Pay Rate"
-                value={formValues.hourlyRate}
+                // value={rate.hourlyRate}
                 required
               />
             </div>
-            <Button className="glow-on-hover-register">Create Employee</Button>
+            <Button onClick={handleSubmit} className="glow-on-hover-register">
+              Create Employee
+            </Button>
           </form>
         </div>
       </Box>

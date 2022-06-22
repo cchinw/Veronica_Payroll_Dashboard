@@ -11,16 +11,6 @@ import { Container } from '@mui/system'
 export default function Employees(props) {
   let navigate = useNavigate()
 
-  const getEmployees = async () => {
-    let res = await axios.get(`${props.BASE_URL}/employee`)
-    props.setAllEmployees(res.data)
-    console.log(res.data, 'FIRSTNAME')
-  }
-
-  useEffect(() => {
-    getEmployees()
-  }, [])
-
   return (
     <div style={{ height: 400, width: '100%' }}>
       <h2>Employees List</h2>
@@ -39,13 +29,13 @@ export default function Employees(props) {
           <Container
             className="child"
             key={employee.id}
-            onClick={() => navigate(`/employee/${employee.id}`)}
+            onClick={() => navigate(`/employee/${employee._id}`)}
             style={{ border: `5px solid #0064f4` }}
           >
             <h3>
               Full name: {employee.firstName} {employee.lastName}
             </h3>
-            <h4>Current Employee? {employee.isCurrent}</h4>
+            <h4>Current Employee: {employee.isCurrent.toString()}</h4>
           </Container>
         ))}
       </div>

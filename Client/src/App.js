@@ -11,38 +11,34 @@ import Payroll from './pages/Payroll'
 import PayrollDetail from './components/PayrollDetail'
 import AddEmployee from './pages/AddEmployee'
 import CreateSchedule from './pages/CreateSchedule'
+import UpdatePayroll from './components/UpdatePayroll'
 
 function App() {
   const BASE_URL = 'http://localhost:3001/api'
-  let { id } = useParams()
 
   // State for Employees
   const [allEmployees, setAllEmployees] = useState([])
   //get Employee by Id ==> getEmployeeById
-  const [specificEmployee, setSpecificEmployee] = useState({
-    firstNmae: '',
-    lastName: '',
-    isCurrent: false
-  })
+  const [employee, setEmployee] = useState(null)
   //update Employee ==> updateEmployee()
   const [employeeUpdate, setEmployeeUpdate] = useState(null)
   //delete Employee ==> deleteEmployee
   const [employeeDelete, setEmployeeDelete] = useState({})
 
-  const getSpecificEmployee = async () => {
-    let res = await axios.get(`${BASE_URL}/employee/${id}`)
-    setSpecificEmployee(res.data)
-    console.log(res, 'EMPLOYEES')
+  // Payroll state
+  const [payroll, setPayroll] = useState(null)
+  const [specificPayroll, setSpecificPayroll] = useState({})
+
+  const getEmployees = async () => {
+    let res = await axios.get(`${BASE_URL}/employee`)
+    setAllEmployees(res.data)
   }
 
+  // console.log(employee, 'EMPLOYEE')
+
   useEffect(() => {
-    getSpecificEmployee()
+    getEmployees()
   }, [])
-
-  // Payroll state
-
-  const [payroll, setPayroll] = useState([])
-  const [specificPayroll, setSpecificPayroll] = useState({})
 
   return (
     <div className="App">
@@ -59,8 +55,8 @@ function App() {
                 BASE_URL={BASE_URL}
                 allEmployees={allEmployees}
                 setAllEmployees={setAllEmployees}
-                specificEmployee={specificEmployee}
-                setSpecificEmployee={setSpecificEmployee}
+                employee={employee}
+                setEmployee={setEmployee}
                 employeeUpdate={employeeUpdate}
                 employeeDelete={employeeDelete}
                 setEmployeeUpdate={setEmployeeUpdate}
@@ -70,7 +66,17 @@ function App() {
           />
           <Route
             path="employee/:id"
-            element={<EmployeeProfile BASE_URL={BASE_URL} />}
+            element={
+              <EmployeeProfile
+                BASE_URL={BASE_URL}
+                allEmployees={allEmployees}
+                setAllEmployees={setAllEmployees}
+                employee={employee}
+                setEmployee={setEmployee}
+                specificPayroll={specificPayroll}
+                setSpecificPayroll={setSpecificPayroll}
+              />
+            }
           />
           <Route path="schedules" element={<Schedules BASE_URL={BASE_URL} />} />
           <Route
@@ -80,6 +86,8 @@ function App() {
                 BASE_URL={BASE_URL}
                 payroll={payroll}
                 setPayroll={setPayroll}
+                allEmployees={allEmployees}
+                setAllEmployees={setAllEmployees}
                 specificPayroll={specificPayroll}
                 setSpecificPayroll={setSpecificPayroll}
               />
@@ -91,12 +99,28 @@ function App() {
             element={<PayrollDetail BASE_URL={BASE_URL} />}
           />
           <Route
+            path="payrollupdate"
+            element={
+              <UpdatePayroll
+                BASE_URL={BASE_URL}
+                allEmployees={allEmployees}
+                setAllEmployees={setAllEmployees}
+              />
+            }
+          />
+          <Route
             path="employee"
             element={<AddEmployee BASE_URL={BASE_URL} />}
           />
           <Route
             path="schedule"
-            element={<CreateSchedule BASE_URL={BASE_URL} />}
+            element={
+              <CreateSchedule
+                BASE_URL={BASE_URL}
+                allEmployees={allEmployees}
+                setAllEmployees={setAllEmployees}
+              />
+            }
           />
         </Routes>
       </main>
