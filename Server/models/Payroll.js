@@ -2,24 +2,19 @@ const { Schema } = require('mongoose')
 
 const Payroll = new Schema(
   {
-    employeeId: [
-      { type: Schema.Types.ObjectId, ref: 'Employee', required: true }
-    ],
-    isCurrent: {
+    employeeId: {
       type: Schema.Types.ObjectId,
-      ref: 'Status',
+      ref: 'Employee',
       required: true
     },
-    weeklySchedule: {
+    weeklyScheduleId: {
       type: Schema.Types.ObjectId,
       ref: 'WeeklySchedule',
-      required: true
+      required: false
     },
-    payRate: [{ type: Schema.Types.ObjectId, ref: 'Payrate', required: true }],
-    grossAmount: { type: Number, required: true },
-    taxes: [{ type: Schema.Types.ObjectId, ref: 'Tax', required: true }],
-    netAmount: { type: Number, required: true },
-    isPaid: { type: Boolean, required: true }
+    grossAmount: { type: Number, required: false },
+    taxId: { type: Schema.Types.ObjectId, ref: 'Tax', required: true },
+    netAmount: { type: Number, required: false }
   },
   { timestamps: true }
 )

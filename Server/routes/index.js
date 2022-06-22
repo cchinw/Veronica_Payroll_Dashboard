@@ -23,14 +23,17 @@ router.delete('/employee/:id', controllers.deleteEmployee)
 // Router to create Pay Rate
 router.post('/payrate', controllers.createPayRate)
 
-// Router to create status
-router.post('/status', controllers.createStatus)
-
 // Router to create daily schedule
 router.post('/dailyschedule', controllers.createDailySchedule)
 
 // Router to Create weekly  Schedule
 router.post('/weeklyschedule', controllers.createWeeklySchedule)
+
+//Router to get all daily schedules
+router.get('/dailyschedule', controllers.getAllDailySchedules)
+// Router to get daily schedule by id
+// Router to get all weekly schedules
+// Router to get weekly Schedule by Id
 
 // Router to Update daily Schedule
 router.put('/dailyschedule/:id', controllers.updateWeeklySchedule)

@@ -2,7 +2,6 @@ const {
   Employee,
   DailySchedule,
   WeeklySchedule,
-  Status,
   PayRate,
   Payroll,
   Tax
@@ -20,6 +19,7 @@ const getAllEmployees = async (req, res) => {
 const getEmployeeById = async (req, res) => {
   try {
     let employee = await Employee.findById(req.params.id)
+    console.log(req.params.id, 'EMPLOYEE BY ID')
     if (employee) return res.status(201).send(employee)
     return res
       .status(404)
@@ -33,7 +33,16 @@ const addEmployee = async (req, res) => {
   try {
     const employee = await new Employee(req.body)
     await employee.save()
-    return res.status(201).json({ employee })
+    console.log(employee, 'EMPLOYEEEEEEEEEE!')
+    if (employee.isCurrent === 'True' || employee.isCurrent === 'true') {
+      employee.isCurrent = true
+    } else if (
+      employee.isCurrent === 'False' ||
+      employee.isCurrent === 'false'
+    ) {
+      employee.isCurrent = false
+    }
+    return res.status(201).json(employee)
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
@@ -43,17 +52,7 @@ const createPayRate = async (req, res) => {
   try {
     const payrate = await new PayRate(req.body)
     await payrate.save()
-    return res.status(201).json({ payrate })
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-}
-
-const createStatus = async (req, res) => {
-  try {
-    const status = await new Status(req.body)
-    await status.save()
-    return res.status(201).json({ status })
+    return res.status(201).json(payrate)
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
@@ -92,17 +91,32 @@ const deleteEmployee = async (req, res) => {
   }
 }
 
+const getAllDailySchedules = async (req, res) => {
+  try {
+    const dailySchedule = await DailySchedule.find()
+    return res.status(201).send(dailySchedule)
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
+
 const createDailySchedule = async (req, res) => {
   try {
-    const scheduleId = req.body.id
-    const schedule = await new DailySchedule.findById(scheduleId)
-    const currentStatus = await new Employee(req.body.isCurrent)
-    if (currentStatus) {
-      return res.status(201).json({ schedule })
+    const employeeId = req.body.employeeId
+    const employee = await Employee.findById(employeeId)
+    console.log(employee, 'EMPLOYEEEE!!!')
+    if (employee) {
+      const currentStatus = employee.isCurrent
+
+      if (currentStatus) {
+        const schedule = await new DailySchedule(req.body)
+        return res.status(201).send(schedule)
+      } else {
+        return res.json({ msg: 'This employee no longer works here!' })
+      }
     } else {
-      res.json({ msg: 'This employee no longer works here!' })
+      return res.json({ msg: 'This employee does not exist!' })
     }
-    await schedule.save()
   } catch (error) {
     return res.status(500).send({ error: error.message })
   }
@@ -110,15 +124,20 @@ const createDailySchedule = async (req, res) => {
 
 const createWeeklySchedule = async (req, res) => {
   try {
-    const scheduleId = req.body.id
-    const schedule = await new WeeklySchedule.findById(scheduleId)
-    const currentStatus = await new Employee(req.body.isCurrent)
-    if (currentStatus) {
-      return res.status(201).json({ schedule })
+    const employeeId = req.body.employeeId
+    const employee = await Employee.findById(employeeId)
+    if (employee) {
+      const currentStatus = employee.isCurrent
+
+      if (currentStatus) {
+        const schedule = await new WeeklySchedule(req.body)
+        return res.status(201).json(schedule)
+      } else {
+        return res.json({ msg: 'This employee no longer works here!' })
+      }
     } else {
-      res.json({ msg: 'This employee no longer works here!' })
+      return res.json({ msg: 'This employee does not exist!' })
     }
-    await schedule.save()
   } catch (error) {
     return res.status(500).send({ error: error.message })
   }
@@ -156,11 +175,45 @@ const updateWeeklySchedule = async (req, res) => {
 
 const createPayroll = async (req, res) => {
   try {
-    const payroll = await new Payroll(req.body)
-    await payroll.save()
-    return res.status(201).json({ payroll })
+    const employeeId = req.body.employeeId
+    const employee = await Employee.findById(employeeId)
+    if (employee) {
+      const currentStatus = employee.isCurrent
+      let payRate = await PayRate.find({ employeeId: employeeId })
+      let rate = payRate.hourlyRate
+
+      if (currentStatus) {
+        let weeklyScheduleId = req.body.weeklySchedule
+        let weeklySchedule = await WeeklySchedule.findById(weeklyScheduleId)
+        if (weeklySchedule) {
+          let hours = weeklySchedule.totalHours
+
+          let taxId = req.body.taxId
+          let tax = await Tax.findById(taxId)
+          if (tax) {
+            let taxPercentage = tax.taxPercentage
+
+            let grossAmount = hours * rate
+            let netAmount = grossAmount - grossAmount * taxPercentage.toFixed(2)
+            console.log(netAmount, 'NETAMOUNT!S')
+
+            const payroll = new Payroll()
+            payroll.employeeId = employeeId
+            payroll.weeklyScheduleId = weeklyScheduleId
+            payroll.grossAmount = grossAmount
+            payroll.taxId = taxId
+            payroll.netAmount = netAmount
+            await payroll.save()
+          } else {
+            return res.json({ msg: 'Invalid request!' })
+          }
+        } else {
+          return res.json({ msg: 'This employee has no status!' })
+        }
+      }
+    }
   } catch (error) {
-    res.send(error.message)
+    return res.status(500).json({ error: error.message })
   }
 }
 
@@ -191,34 +244,6 @@ const getTaxRate = async (req, res) => {
   }
 }
 
-const calculatePay = async (req, res) => {
-  try {
-    const payroll = await new Payroll.findById(req.params.id)
-    const pay = await new Payroll(req.body)
-
-    let grossAmount = []
-    let hours = payroll.weeklySchedule.totalHoursWorked
-    let rate = payroll.payRate.hourlyRate
-    let gross = hours * rate
-    grossAmount.push(gross)
-
-    let netAmount = []
-    let tax = (payroll.taxes.taxPercentage / 100).toFixed(2)
-    let net = gross - tax
-    netAmount.push(net)
-
-    await Payroll.findByIdAndUpdate(payroll, {
-      grossAmount: [...payroll.grossAmount],
-      netAmount: [...payroll.netAmount, payroll._id]
-    })
-    await pay.save()
-    console.log(pay, 'PAYYYYYY')
-    return res.status(201).json(pay)
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-}
-
 module.exports = {
   addEmployee, // route init
   getAllEmployees, // route init
@@ -226,14 +251,14 @@ module.exports = {
   updateEmployeeDetail, // route init
   deleteEmployee, // route init
   createPayRate, //route init
-  createStatus, // route init
   createDailySchedule, // route init
   createWeeklySchedule, // route init
+  getAllDailySchedules,
+
   updateDailySchedule, // route init
   updateWeeklySchedule, // route init
   createPayroll, // route init
   getAllPayrollReports, // route init
   getSpecificPayrollReport, // route init
-  getTaxRate, //route init
-  calculatePay //route init
+  getTaxRate //route init
 }

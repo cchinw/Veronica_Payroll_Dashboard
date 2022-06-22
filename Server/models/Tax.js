@@ -2,8 +2,7 @@ const { Schema } = require('mongoose')
 
 const Tax = new Schema(
   {
-    taxPercentage: { type: Number, required: false },
-    isActive: { type: Boolean, required: false }
+    taxPercentage: { type: Number, required: false }
   },
   { timestamps: true }
 )
