@@ -5,16 +5,16 @@ const EmployeeSchedule = ({ employeeId, date, row, col, times, setTimes }) => {
   const [startTime, setStartTime] = useState(0)
   const [endTime, setEndTime] = useState(0)
 
-  // useEffect(() => {
-  //   updateTimes()
-  // }, [times, row, col])
+  useEffect(() => {
+    updateTimes()
+  }, [times, row, col])
 
-  // const updateTimes = () => {
-  //   let temp = times
-  //   console.log(temp, 'TEMP')
-  //   temp[row][col] = { ...temp[row][col], employeeId: employeeId, day: date }
-  //   setTimes(temp)
-  // }
+  const updateTimes = () => {
+    let temp = times
+    console.log(temp, 'TEMP')
+    temp[row][col] = { ...temp[row][col], employeeId: employeeId, day: date }
+    setTimes(temp)
+  }
 
   const handleChangeStart = (e) => {
     setStartTime(e.target.value)

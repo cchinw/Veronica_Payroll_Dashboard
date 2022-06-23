@@ -1,51 +1,110 @@
-import { Box, Button, Container, Divider, TableHead } from '@mui/material'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Divider,
+  TableHead,
+  TextField
+} from '@mui/material'
 import { useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import axios from 'axios'
+import PayrollDetail from './PayrollDetail'
+import { useState } from 'react'
 
 const EmployeeProfile = (props) => {
-  let { id } = useParams()
+  const { id } = useParams()
+  let navigate = useNavigate()
+
+  const [employee, setEmployee] = useState(null)
+  const [employeeFormValues, setEmployeeFormValues] = useState({
+    firstName: '',
+    lastName: '',
+    isCurrent: true
+  })
+
+  const getEmployee = async () => {
+    const res = await axios.get(`${props.BASE_URL}/employee/${id}`)
+    setEmployee(res.data)
+  }
 
   useEffect(() => {
-    const getSpecificEmployee = async () => {
-      let employeeProfileRes = await axios.get(
-        `${props.BASE_URL}/employee/${id}`
-      )
-      let payrollRes = await axios.get(`${props.BASE_URL}/payroll/${id}`)
-      props.setEmployee(employeeProfileRes.data)
-      props.setSpecificPayroll(payrollRes.data)
-    }
-    getSpecificEmployee()
+    getEmployee()
   }, [])
 
-  console.log(props.specificPayroll, 'SPECIFIC PAYROLL')
+  const handleEmployeeSubmit = async (e, id) => {
+    e.preventDefault()
+    const data = {
+      firstName: employeeFormValues.firstName,
+      lastName: employeeFormValues.lastName,
+      isCurrent: employeeFormValues.isCurrent
+    }
+    console.log(id, 'EMPLOYEE ID')
+    console.log(data, 'Employee DATAAAA')
+    console.log(props.BASE_URL, 'BASE URL')
+    const res = await axios.put(`${props.BASE_URL}/employee/${id}`, data)
+    setEmployee({
+      ...employee,
+      firstName: employeeFormValues.firstName,
+      lastName: employeeFormValues.lastName,
+      isCurrent: employeeFormValues.isCurrent
+    })
+    props.setEmployeeUpdate(true)
+    navigate('/employees')
+  }
+
+  const handleEmployeeChange = (e) => {
+    e.preventDefault()
+    setEmployeeFormValues({
+      ...employeeFormValues,
+      [e.target.name]: e.target.value
+    })
+  }
 
   return (
     <Container>
-      <Button>Click me!</Button>
-      {props.employee && (
-        <Box>
-          <Container>
+      {employee && (
+        <Container>
+          <div>
+            <TextField
+              required
+              name="firstName"
+              id="outlined-required"
+              label="First Name"
+              defaultValue={employee.firstName}
+              onChange={handleEmployeeChange}
+            />
+            <TextField
+              required
+              name="lastName"
+              id="outlined-required"
+              label="Last Name"
+              defaultValue={employee.lastName}
+              onChange={handleEmployeeChange}
+            />
+            <TextField
+              required
+              name="isCurrent"
+              id="outlined-required"
+              label="Current Employee?"
+              defaultValue={true}
+              onChange={handleEmployeeChange}
+            />
             <div>
-              <h2>Profile</h2>
-              <h4>
-                Employee Full Name:{' '}
-                {props.employee.firstName + ' ' + props.employee.lastName}
-              </h4>
-              <h4>Current Employee: {props.employee.isCurrent}</h4>
-              <Divider />
-              <div>
-                <h2>Employee Payroll</h2>
-              </div>
-              <Divider />
-              <div>
-                <h2>WeeklySchedule</h2>
-              </div>
+              <Button
+                className="btn"
+                onClick={(e) => handleEmployeeSubmit(e, employee._id)}
+              >
+                Update
+              </Button>
+              <Button className="btn" onClick={() => navigate(`/employees`)}>
+                Cancel
+              </Button>
             </div>
-          </Container>
-        </Box>
+          </div>
+        </Container>
       )}
-      {/* <Payroll /> */}
     </Container>
   )
 }

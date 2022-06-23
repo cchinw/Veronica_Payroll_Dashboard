@@ -20,9 +20,9 @@ function App() {
   // State for Employees
   const [allEmployees, setAllEmployees] = useState([])
   //get Employee by Id ==> getEmployeeById
-  const [employee, setEmployee] = useState(null)
+
   //update Employee ==> updateEmployee()
-  const [employeeUpdate, setEmployeeUpdate] = useState(null)
+  const [employeeUpdate, setEmployeeUpdate] = useState(false)
   //delete Employee ==> deleteEmployee
   const [employeeDelete, setEmployeeDelete] = useState({})
 
@@ -38,11 +38,10 @@ function App() {
     setAllEmployees(res.data)
   }
 
-  // console.log(employee, 'EMPLOYEE')
-
   useEffect(() => {
     getEmployees()
-  }, [])
+    setEmployeeUpdate(false)
+  }, [employeeUpdate])
 
   return (
     <div className="App">
@@ -58,8 +57,6 @@ function App() {
                 BASE_URL={BASE_URL}
                 allEmployees={allEmployees}
                 setAllEmployees={setAllEmployees}
-                employee={employee}
-                setEmployee={setEmployee}
                 employeeUpdate={employeeUpdate}
                 employeeDelete={employeeDelete}
                 setEmployeeUpdate={setEmployeeUpdate}
@@ -78,12 +75,11 @@ function App() {
                 BASE_URL={BASE_URL}
                 allEmployees={allEmployees}
                 setAllEmployees={setAllEmployees}
-                employee={employee}
-                setEmployee={setEmployee}
                 employeeUpdate={employeeUpdate}
                 employeeDelete={employeeDelete}
                 setEmployeeUpdate={setEmployeeUpdate}
                 setEmployeeDelete={setEmployeeDelete}
+                getEmployees={getEmployees}
               />
             }
           />
@@ -94,10 +90,9 @@ function App() {
                 BASE_URL={BASE_URL}
                 allEmployees={allEmployees}
                 setAllEmployees={setAllEmployees}
-                employee={employee}
-                setEmployee={setEmployee}
                 specificPayroll={specificPayroll}
                 setSpecificPayroll={setSpecificPayroll}
+                setEmployeeUpdate={setEmployeeUpdate}
               />
             }
           />
@@ -158,7 +153,7 @@ function App() {
               />
             }
           />
-          <Route
+          {/* <Route
             path="test"
             element={
               <Test
@@ -167,7 +162,7 @@ function App() {
                 setAllEmployees={setAllEmployees}
               />
             }
-          />
+          /> */}
         </Routes>
       </main>
     </div>
