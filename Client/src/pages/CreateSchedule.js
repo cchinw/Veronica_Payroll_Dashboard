@@ -4,15 +4,44 @@ import {
   Box,
   TextField,
   Divider,
-  MenuItem
+  MenuItem,
+  ButtonGroup
 } from '@mui/material'
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
+import EmployeeSchedule from '../components/EmployeeSchedule'
 
 const CreateSchedule = (props) => {
   let navigate = useNavigate()
+
+  const [dayOfWeek, setDayOfWeek] = useState(null)
+  const [week, setWeek] = useState(25)
+  const dates = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ]
+
+  function getDateOfWeek(w, y) {
+    let daysOfWeek = []
+    for (let i = 1; i <= 7; i++) {
+      let d = i + 1 + (w - 1) * 7
+      let date = new Date(y, 0, d)
+      daysOfWeek.push(date)
+    }
+    console.log(daysOfWeek, 'DAYS OF WEEK')
+    return daysOfWeek
+  }
+
+  useEffect(() => {
+    setDayOfWeek(getDateOfWeek(week, 2022))
+  }, [week])
 
   const [dailySchedule, setDailySchedule] = useState({
     day: Date,
@@ -20,6 +49,9 @@ const CreateSchedule = (props) => {
     endTime: '',
     hours: 0
   })
+  const [times, setTimes] = useState(
+    new Array(props.allEmployees.length).fill(0).map((employee) => new Array(7))
+  )
 
   const [weeklySchedule, setWeeklySchedule] = useState({
     startDate: Date,
@@ -63,7 +95,6 @@ const CreateSchedule = (props) => {
         `${props.BASE_URL}/dailyschedule`,
         dailyData
       )
-      console.log(dailyRes, 'DAILY RESPONSE')
       setDailySchedule({ ...dailySchedule, employeeId: props.allEmployees._id })
     }
 
@@ -79,7 +110,6 @@ const CreateSchedule = (props) => {
         `${props.BASE_URL}/weeklyschedule`,
         weeklyData
       )
-      console.log(weeklyRes, 'DAILY RESPONSE')
       setWeeklySchedule({
         ...weeklySchedule,
         employeeId: props.allEmployees._id
@@ -105,6 +135,8 @@ const CreateSchedule = (props) => {
     navigate('/schedules')
   }
   console.log(dailySchedule, 'DAILYSCHEDULE')
+  console.log(weeklySchedule, 'WEEKLY SCHEDULE!!!')
+  console.log(dailySchedule, 'DAILY SCHEDULE!!!')
 
   return (
     <div className="create-schedule">
@@ -125,24 +157,24 @@ const CreateSchedule = (props) => {
         <table>
           <tr>
             <th>Employee</th>
-            <th>Sunday</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
+            {dayOfWeek &&
+              dayOfWeek.map((date) => <th>{date.toString().slice(0, 10)} </th>)}
           </tr>
-          {props.allEmployees.map((employee) => (
-            <tr>
-              <th>{employee.firstName + ' ' + employee.lastName}</th>
-            </tr>
-          ))}
-          <tr>
-            <td>
-              <input type="date"></input>
-            </td>
-          </tr>
+          {props.allEmployees &&
+            props.allEmployees.map((employee) => (
+              <tr>
+                <th>{employee.firstName + ' ' + employee.lastName}</th>
+                <div className="employee-schdule" style={{ display: 'flex' }}>
+                  {new Array(7).fill(0).map(() => (
+                    <EmployeeSchedule
+                      employee={employee}
+                      dailySchedule={dailySchedule}
+                      handleDailyChange={handleDailyChange}
+                    />
+                  ))}
+                </div>
+              </tr>
+            ))}
         </table>
 
         {/* <form className="forms">
