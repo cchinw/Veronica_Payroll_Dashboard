@@ -1,16 +1,7 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Container,
-  Divider,
-  TableHead,
-  TextField
-} from '@mui/material'
+import { Button, Container, TextField } from '@mui/material'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import axios from 'axios'
-import PayrollDetail from './PayrollDetail'
 import { useState } from 'react'
 
 const EmployeeProfile = (props) => {

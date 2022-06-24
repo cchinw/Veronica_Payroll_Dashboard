@@ -36,11 +36,6 @@ export default function Search(props) {
 
   const [selectedIndex, setSelectedIndex] = useState(1)
 
-  // const handleListItemClick = (e) => {
-  //   e.preventDefault()
-  //   setSelectedIndex(e.target.value)
-  // }
-
   const drawer = (
     <div>
       <Toolbar />

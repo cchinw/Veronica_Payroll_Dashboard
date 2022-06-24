@@ -1,6 +1,6 @@
 import './style/App.css'
 import axios from 'axios'
-import { Routes, Route, useParams } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Search from './components/Search'
 import Dashboard from './pages/Dashboard'
@@ -8,11 +8,8 @@ import Employees from './pages/Employees'
 import EmployeeProfile from './components/EmployeeProfile'
 import Schedules from './pages/Schedules'
 import Payroll from './pages/Payroll'
-import PayrollDetail from './components/PayrollDetail'
 import AddEmployee from './pages/AddEmployee'
 import CreateSchedule from './pages/CreateSchedule'
-import UpdatePayroll from './components/UpdatePayroll'
-import Test from './pages/Test'
 
 function App() {
   const BASE_URL = 'http://localhost:3001/api'
@@ -121,21 +118,6 @@ function App() {
                 setAllEmployees={setAllEmployees}
                 specificPayroll={specificPayroll}
                 setSpecificPayroll={setSpecificPayroll}
-              />
-            }
-          />
-          <Route path="report" element={<Payroll BASE_URL={BASE_URL} />} />
-          <Route
-            path="payroll/:id"
-            element={<PayrollDetail BASE_URL={BASE_URL} />}
-          />
-          <Route
-            path="payrollupdate"
-            element={
-              <UpdatePayroll
-                BASE_URL={BASE_URL}
-                allEmployees={allEmployees}
-                setAllEmployees={setAllEmployees}
               />
             }
           />

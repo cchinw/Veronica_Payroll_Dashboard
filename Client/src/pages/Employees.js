@@ -1,17 +1,12 @@
-import { useParams, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import axios from 'axios'
-import { useState, useEffect } from 'react'
-import AddEmployee from './AddEmployee'
-import EmployeeProfile from '../components/EmployeeProfile'
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
 import {
   Button,
   Card,
   CardContent,
   Typography,
   Box,
-  ButtonGroup,
-  TextField
+  ButtonGroup
 } from '@mui/material'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Container } from '@mui/system'

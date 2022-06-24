@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate, useParams } from 'react-router'
+import { useNavigate } from 'react-router'
 import {
   Container,
   Divider,
@@ -33,25 +33,6 @@ const Payroll = (props) => {
     getAllPayroll()
   }, [])
 
-  const [payrollFormFields, setPayrollFormFields] = useState({
-    employeeId: '',
-    weeklyHours: '',
-    grossAmount: 0,
-    taxes: 0,
-    netAmount: 0
-  })
-
-  const handlePayrollChange = (e) => {
-    setPayrollFormFields({
-      ...payrollFormFields,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const handleSelected = (payroll) => {
-    setPayrollFormFields(payroll)
-  }
-
   const handleWeekChange = (e) => {
     setWeek(e.target.value)
   }
@@ -59,7 +40,7 @@ const Payroll = (props) => {
   const handleYearChange = (e) => {
     setYear(e.target.value)
   }
-  console.log(payrolls, 'Payrolls')
+
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined">
@@ -68,10 +49,12 @@ const Payroll = (props) => {
             PAYROLL
           </Typography>
           <Typography variant="h4" component="div">
+            {/* Button to navigate to page to create a new employee payroll (I did
+            not get the the time to finish this up) */}
             <Button
               size="medium"
               onClick={() => {
-                navigate('/dashboard')
+                // navigate('/dashboard')
               }}
             >
               <AccountBalanceIcon />

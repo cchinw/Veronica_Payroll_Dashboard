@@ -2,8 +2,7 @@ import { Container } from '@mui/system'
 import Employees from './Employees'
 import Payroll from './Payroll'
 import CreateSchedule from './CreateSchedule'
-import Schedules from './Schedules'
-import { Box, Card, Divider, Paper, Typography } from '@mui/material'
+import { Box, Card, Paper, Typography } from '@mui/material'
 
 const Dashboard = (props) => {
   return (

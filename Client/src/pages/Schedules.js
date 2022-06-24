@@ -1,3 +1,5 @@
+// This page is meant to display all the schedules created on a table. I did not have enough time to render it out.
+
 import { Container } from '@mui/material'
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -6,12 +8,11 @@ const Schedules = (props) => {
   const getAllDailySchedule = async () => {
     const res = await axios.get(`${props.BASE_URL}/dailyschedule`)
     props.setAllDailySchedule(res.data)
-    console.log(props.allDailySchedule, 'ALL DAILY SCHEDULE!')
   }
 
   useEffect(() => {
     getAllDailySchedule()
-  }, [props.allDailySchedule])
+  }, [])
 
   return (
     <div className="schedules">

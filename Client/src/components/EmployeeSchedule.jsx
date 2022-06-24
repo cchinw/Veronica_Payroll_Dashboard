@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { ButtonGroup, Button } from '@mui/material'
 import { useEffect } from 'react'
 const EmployeeSchedule = ({ employeeId, date, row, col, times, setTimes }) => {
   const [startTime, setStartTime] = useState(0)
@@ -11,7 +10,7 @@ const EmployeeSchedule = ({ employeeId, date, row, col, times, setTimes }) => {
 
   const updateTimes = () => {
     let temp = times
-    console.log(temp, 'TEMP')
+
     temp[row][col] = { ...temp[row][col], employeeId: employeeId, day: date }
     setTimes(temp)
   }
