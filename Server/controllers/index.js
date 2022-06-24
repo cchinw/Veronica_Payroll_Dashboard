@@ -1,3 +1,4 @@
+const e = require('express')
 const {
   Employee,
   DailySchedule,
@@ -60,21 +61,10 @@ const createPayRate = async (req, res) => {
 
 const updateEmployeeDetail = async (req, res) => {
   try {
-    const { id } = req.params
-    await Employee.findByIdAndUpdate(
-      id,
-      req.body,
-      { new: true },
-      (err, employee) => {
-        if (err) {
-          res.status(500).send(err)
-        }
-        if (!employee) {
-          res.status(500).send('Employee not found!')
-        }
-        return res.status(200).json(employee)
-      }
-    )
+    const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+      new: true
+    })
+    res.send(employee)
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -82,8 +72,7 @@ const updateEmployeeDetail = async (req, res) => {
 
 const deleteEmployee = async (req, res) => {
   try {
-    const { id } = req.params
-    const deleted = await Employee.findByIdAndDelete(id)
+    const deleted = await Employee.findByIdAndDelete(req.params.id)
     if (deleted) return res.status(200).send('Employee Deleted')
     throw new Error('Employee not found!')
   } catch (error) {
@@ -92,6 +81,15 @@ const deleteEmployee = async (req, res) => {
 }
 
 const getAllDailySchedules = async (req, res) => {
+  try {
+    const dailySchedule = await DailySchedule.find()
+    return res.status(201).send(dailySchedule)
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
+
+const getAllWeeklySchedules = async (req, res) => {
   try {
     const dailySchedule = await DailySchedule.find()
     return res.status(201).send(dailySchedule)
@@ -143,6 +141,35 @@ const createWeeklySchedule = async (req, res) => {
   }
 }
 
+//Create schedule
+const createSchedule = async (req, res) => {
+  try {
+    const week = req.body.week
+    const year = req.body.year
+    const schedule = req.body.schedule
+
+    for await (const weeklySchedule of schedule) {
+      let totalHours = 0
+      for await (const dailySchedule of weeklySchedule) {
+        totalHours += dailySchedule.hours
+        new DailySchedule(dailySchedule)
+      }
+      let data = {
+        week: week,
+        year: year,
+        employeeId: weeklySchedule[0].employeeId,
+        startDate: weeklySchedule[0].day,
+        endDate: weeklySchedule[6].day,
+        totalHours: totalHours
+      }
+      new WeeklySchedule(data)
+    }
+    return res.status(201).send('Success created schedules')
+  } catch (error) {
+    throw error
+  }
+}
+
 const updateDailySchedule = async (req, res) => {
   try {
     const schedule = await DailySchedule.findByIdAndUpdate(
@@ -170,6 +197,32 @@ const updateWeeklySchedule = async (req, res) => {
     res.json(schedule)
   } catch (error) {
     res.send(error.message)
+  }
+}
+
+const getPayrollsByWeek = async (req, res) => {
+  try {
+    const week = parseInt(req.params.week)
+    const year = parseInt(req.params.year)
+    console.log(week, year)
+    const payrolls = []
+    const weeks = await WeeklySchedule.find({ week: week, year: year })
+    for await (const week of weeks) {
+      let payroll = await Payroll.findOne({
+        weeklyScheduleId: week._id
+      })
+      const employee = await Employee.findById(payroll.employeeId)
+      const weeklySchedule = await WeeklySchedule.findById(
+        payroll.weeklyScheduleId
+      )
+      const tax = await Tax.findById(payroll.taxId)
+      const newPayroll = { payroll, employee, weeklySchedule, tax }
+      payrolls.push(newPayroll)
+    }
+
+    return res.status(200).json(payrolls)
+  } catch (error) {
+    throw error
   }
 }
 
@@ -226,9 +279,10 @@ const getAllPayrollReports = async (req, res) => {
   }
 }
 
-const getSpecificPayrollReport = async (req, res) => {
+const getPayrollByEmployeeId = async (req, res) => {
   try {
-    const payroll = await Payroll.findById(req.params.id)
+    let employee = await Employee.findById(req.params.id)
+    const payroll = await Payroll.findById(employee)
     return res.status(201).send(payroll)
   } catch (error) {
     return res.status(500).send(error.message)
@@ -254,11 +308,13 @@ module.exports = {
   createDailySchedule, // route init
   createWeeklySchedule, // route init
   getAllDailySchedules,
-
+  getAllWeeklySchedules,
+  createSchedule,
   updateDailySchedule, // route init
   updateWeeklySchedule, // route init
   createPayroll, // route init
   getAllPayrollReports, // route init
-  getSpecificPayrollReport, // route init
-  getTaxRate //route init
+  getPayrollByEmployeeId, // route init
+  getTaxRate, //route init
+  getPayrollsByWeek
 }
