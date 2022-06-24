@@ -102,7 +102,7 @@ const Payroll = (props) => {
                           {payroll.employee.lastName}
                         </th>
 
-                        <th>{payroll.employee.isCurrent.toString()}</th>
+                        <th>{payroll.employee.currentStatus}</th>
                         <th>{payroll.weeklySchedule.totalHours}</th>
                         <th>{payroll.payroll.grossAmount}</th>
                         <th>{payroll.tax.taxPercentage}%</th>

@@ -3,13 +3,19 @@ import Employees from './Employees'
 import Payroll from './Payroll'
 import CreateSchedule from './CreateSchedule'
 import { Box, Card, Paper, Typography } from '@mui/material'
+import { useNavigate } from 'react-router'
 
 const Dashboard = (props) => {
+  let navigate = useNavigate()
   return (
     <Container>
       <Box sx={{ minWidth: 275 }}>
         <h1>Dashboard</h1>
-        <Card variant="outlined" sx={{ maxWidth: 345 }}>
+        <Card
+          onClick={() => navigate('/employees')}
+          variant="outlined"
+          sx={{ maxWidth: 345 }}
+        >
           <Typography variant="body2" color="text.secondary">
             <Employees
               BASE_URL={props.BASE_URL}
@@ -24,7 +30,7 @@ const Dashboard = (props) => {
             />
           </Typography>
         </Card>
-        <Paper>
+        <Paper onClick={() => navigate('/payroll')}>
           <Payroll
             payroll={props.payroll}
             setPayroll={props.setPayroll}
@@ -34,7 +40,7 @@ const Dashboard = (props) => {
             setSpecificPayroll={props.setSpecificPayroll}
           />
         </Paper>
-        <Paper>
+        <Paper onClick={() => navigate('/schedule')}>
           <CreateSchedule
             BASE_URL={props.BASE_URL}
             allEmployees={props.allEmployees}

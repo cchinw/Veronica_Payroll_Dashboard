@@ -135,16 +135,6 @@ function App() {
               />
             }
           />
-          {/* <Route
-            path="test"
-            element={
-              <Test
-                BASE_URL={BASE_URL}
-                allEmployees={allEmployees}
-                setAllEmployees={setAllEmployees}
-              />
-            }
-          /> */}
         </Routes>
       </main>
     </div>

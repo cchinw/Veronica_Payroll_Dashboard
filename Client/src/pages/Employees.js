@@ -52,7 +52,7 @@ export default function Employees(props) {
                     <h3>
                       Full name: {employee.firstName} {employee.lastName}
                     </h3>
-                    <h4>Current Employee: {employee.isCurrent}</h4>
+                    <h4>Current Employee: {employee.currentStatus}</h4>
                   </div>
                   <ButtonGroup>
                     <Button onClick={() => deleteEmployee(employee._id)}>

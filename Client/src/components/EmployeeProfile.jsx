@@ -12,7 +12,7 @@ const EmployeeProfile = (props) => {
   const [employeeFormValues, setEmployeeFormValues] = useState({
     firstName: '',
     lastName: '',
-    isCurrent: true
+    currentStatus: ''
   })
 
   const getEmployee = async () => {
@@ -29,7 +29,7 @@ const EmployeeProfile = (props) => {
     const data = {
       firstName: employeeFormValues.firstName,
       lastName: employeeFormValues.lastName,
-      isCurrent: employeeFormValues.isCurrent
+      currentStatus: employeeFormValues.currentStatus
     }
     console.log(id, 'EMPLOYEE ID')
     console.log(data, 'Employee DATAAAA')
@@ -39,7 +39,7 @@ const EmployeeProfile = (props) => {
       ...employee,
       firstName: employeeFormValues.firstName,
       lastName: employeeFormValues.lastName,
-      isCurrent: employeeFormValues.isCurrent
+      currentStatus: employeeFormValues.currentStatus
     })
     props.setEmployeeUpdate(true)
     navigate('/employees')
@@ -76,10 +76,10 @@ const EmployeeProfile = (props) => {
             />
             <TextField
               required
-              name="isCurrent"
+              name="currentStatus"
               id="outlined-required"
               label="Current Employee?"
-              defaultValue={true}
+              defaultValue={employee.currentStatus}
               onChange={handleEmployeeChange}
             />
             <div>

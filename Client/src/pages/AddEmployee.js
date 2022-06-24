@@ -14,7 +14,7 @@ const AddEmployee = (props) => {
   const [employeeFormValues, setEmployeeFormValues] = useState({
     firstName: '',
     lastName: '',
-    isCurrent: false
+    currentStatus: ''
   })
   const [rate, setRate] = useState({
     employeeId: '',
@@ -41,7 +41,7 @@ const AddEmployee = (props) => {
       const employeeData = {
         firstName: employeeFormValues.firstName,
         lastName: employeeFormValues.lastName,
-        isCurrent: employeeFormValues.isCurrent
+        currentStatus: employeeFormValues.currentStatus
       }
 
       const employeeRes = await axios.post(
@@ -63,7 +63,7 @@ const AddEmployee = (props) => {
     setEmployeeFormValues({
       firstName: '',
       lastName: '',
-      isCurrent: false
+      currentStatus: ''
     })
     setRate({
       employeeId: '',
@@ -111,15 +111,15 @@ const AddEmployee = (props) => {
             </div>
             <Divider />
             <div className="input-wrapper">
-              <label for="status">Currently Employed?</label>
+              <label for="status">Current Status: </label>
               <select
                 onChange={handleEmployeeChange}
-                name="isCurrent"
-                value={employeeFormValues.isCurrent}
+                name="currentStatus"
+                value={employeeFormValues.currentStatus}
                 required
               >
-                <option>True</option>
-                <option>False</option>
+                <option>Current Employee</option>
+                <option>Past Employee</option>
               </select>
             </div>
             <div className="input-wrapper">
@@ -128,7 +128,7 @@ const AddEmployee = (props) => {
                 type="number"
                 name="payrate"
                 placeholder="Pay Rate"
-                // value={rate.hourlyRate}
+                value={rate.hourlyRate}
                 required
               />
             </div>
