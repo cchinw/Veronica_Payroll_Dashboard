@@ -5,14 +5,13 @@ import { useEffect } from 'react'
 const Schedules = (props) => {
   const getAllDailySchedule = async () => {
     const res = await axios.get(`${props.BASE_URL}/dailyschedule`)
-    console.log(res, 'DAILY SCHEDULE RES')
     props.setAllDailySchedule(res.data)
+    console.log(props.allDailySchedule, 'ALL DAILY SCHEDULE!')
   }
 
   useEffect(() => {
     getAllDailySchedule()
-  }, [])
-  console.log(props.allDailySchedule, 'ALL DAILY SCHEDULE')
+  }, [props.allDailySchedule])
 
   return (
     <div className="schedules">
@@ -20,7 +19,7 @@ const Schedules = (props) => {
         <Container>
           <div>
             <h2>Daily Schedule</h2>
-            <h4>Employee Full Name: {props.allDailySchedule.undefined}</h4>
+            <h4>Employee Full Name: {props.allDailySchedule.employeeId}</h4>
           </div>
         </Container>
       )}

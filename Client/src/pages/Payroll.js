@@ -100,37 +100,32 @@ const Payroll = (props) => {
                         onChange={handleYearChange}
                       />
                     </th>
-                    <Divider />
-                    <th>Current Employee</th>
-                    <Divider />
-                    <th>Hours Worked (per week)</th>
-                    <Divider />
-                    <th>Hours Worked (per week)</th>
-                    <Divider />
-                    <th>Gross Amount</th>
-                    <Divider />
-                    <th>Taxes</th>
-                    <Divider />
-                    <th>Net Amount</th>
-                    <Divider />
-                  </tr>
 
-                  <tr>
-                    {payrolls &&
-                      payrolls.map((payroll) => (
-                        <tr>
-                          <th>
-                            {payroll.employee.firstName}{' '}
-                            {payroll.employee.lastName}
-                          </th>
-                          <th>{payroll.employee.isCurrent.toString()}</th>
-                          <th>{payroll.weeklySchedule.totalHours}</th>
-                          <th>{payroll.payroll.grossAmount}</th>
-                          <th>{payroll.tax.taxPercentage}%</th>
-                          <th>{payroll.payroll.netAmount}</th>
-                        </tr>
-                      ))}
+                    <th>Current Employee</th>
+
+                    <th>Hours Worked (per week)</th>
+
+                    <th>Gross Amount</th>
+
+                    <th>Taxes</th>
+
+                    <th>Net Amount</th>
                   </tr>
+                  {payrolls &&
+                    payrolls.map((payroll) => (
+                      <tr>
+                        <th>
+                          {payroll.employee.firstName}{' '}
+                          {payroll.employee.lastName}
+                        </th>
+
+                        <th>{payroll.employee.isCurrent.toString()}</th>
+                        <th>{payroll.weeklySchedule.totalHours}</th>
+                        <th>{payroll.payroll.grossAmount}</th>
+                        <th>{payroll.tax.taxPercentage}%</th>
+                        <th>{payroll.payroll.netAmount}</th>
+                      </tr>
+                    ))}
                 </table>
               </div>
               <ButtonGroup>

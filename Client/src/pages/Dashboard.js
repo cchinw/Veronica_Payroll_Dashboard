@@ -1,28 +1,29 @@
 import { Container } from '@mui/system'
 import Employees from './Employees'
 import Payroll from './Payroll'
+import CreateSchedule from './CreateSchedule'
 import Schedules from './Schedules'
-import Report from './Report'
-import Search from '../components/Search'
-import { Box, Card, Divider, Paper } from '@mui/material'
+import { Box, Card, Divider, Paper, Typography } from '@mui/material'
 
 const Dashboard = (props) => {
   return (
     <Container>
       <Box sx={{ minWidth: 275 }}>
         <h1>Dashboard</h1>
-        <Card variant="outlined" square>
-          <Employees
-            BASE_URL={props.BASE_URL}
-            allEmployees={props.allEmployees}
-            setAllEmployees={props.setAllEmployees}
-            employee={props.employee}
-            setEmployee={props.setEmployee}
-            employeeUpdate={props.employeeUpdate}
-            employeeDelete={props.employeeDelete}
-            setEmployeeUpdate={props.setEmployeeUpdate}
-            setEmployeeDelete={props.setEmployeeDelete}
-          />
+        <Card variant="outlined" sx={{ maxWidth: 345 }}>
+          <Typography variant="body2" color="text.secondary">
+            <Employees
+              BASE_URL={props.BASE_URL}
+              allEmployees={props.allEmployees}
+              setAllEmployees={props.setAllEmployees}
+              employee={props.employee}
+              setEmployee={props.setEmployee}
+              employeeUpdate={props.employeeUpdate}
+              employeeDelete={props.employeeDelete}
+              setEmployeeUpdate={props.setEmployeeUpdate}
+              setEmployeeDelete={props.setEmployeeDelete}
+            />
+          </Typography>
         </Card>
         <Paper>
           <Payroll
@@ -35,7 +36,7 @@ const Dashboard = (props) => {
           />
         </Paper>
         <Paper>
-          <Schedules
+          <CreateSchedule
             BASE_URL={props.BASE_URL}
             allEmployees={props.allEmployees}
             setAllEmployees={props.setAllEmployees}
@@ -45,9 +46,6 @@ const Dashboard = (props) => {
             setAllWeeklySchedule={props.setAllWeeklySchedule}
           />
         </Paper>
-        {/* <Paper>
-            <Report />
-          </Paper> */}
       </Box>
     </Container>
   )
