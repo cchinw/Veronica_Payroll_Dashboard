@@ -34,15 +34,6 @@ const addEmployee = async (req, res) => {
   try {
     const employee = await new Employee(req.body)
     await employee.save()
-    console.log(employee, 'EMPLOYEEEEEEEEEE!')
-    if (employee.isCurrent === 'True' || employee.isCurrent === 'true') {
-      employee.isCurrent = true
-    } else if (
-      employee.isCurrent === 'False' ||
-      employee.isCurrent === 'false'
-    ) {
-      employee.isCurrent = false
-    }
     return res.status(201).json(employee)
   } catch (error) {
     return res.status(500).json({ error: error.message })
@@ -104,9 +95,9 @@ const createDailySchedule = async (req, res) => {
     const employee = await Employee.findById(employeeId)
     console.log(employee, 'EMPLOYEEEE!!!')
     if (employee) {
-      const currentStatus = employee.isCurrent
+      const currentStatus = employee.currentStatus
 
-      if (currentStatus) {
+      if (currentStatus === 'Current Employee') {
         const schedule = await new DailySchedule(req.body)
         return res.status(201).send(schedule)
       } else {
@@ -125,9 +116,9 @@ const createWeeklySchedule = async (req, res) => {
     const employeeId = req.body.employeeId
     const employee = await Employee.findById(employeeId)
     if (employee) {
-      const currentStatus = employee.isCurrent
+      const currentStatus = employee.currentStatus
 
-      if (currentStatus) {
+      if (currentStatus === 'Current Employee') {
         const schedule = await new WeeklySchedule(req.body)
         return res.status(201).json(schedule)
       } else {
@@ -231,11 +222,11 @@ const createPayroll = async (req, res) => {
     const employeeId = req.body.employeeId
     const employee = await Employee.findById(employeeId)
     if (employee) {
-      const currentStatus = employee.isCurrent
+      const currentStatus = employee.currentStatus
       let payRate = await PayRate.find({ employeeId: employeeId })
       let rate = payRate.hourlyRate
 
-      if (currentStatus) {
+      if (currentStatus === 'Current Employee') {
         let weeklyScheduleId = req.body.weeklySchedule
         let weeklySchedule = await WeeklySchedule.findById(weeklyScheduleId)
         if (weeklySchedule) {

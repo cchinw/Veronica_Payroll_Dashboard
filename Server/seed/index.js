@@ -8,14 +8,14 @@ const main = async () => {
   const employee1 = new Employee({
     firstName: 'Zara',
     lastName: 'Naza',
-    isCurrent: true
+    currentStatus: 'Current Employee'
   })
   await employee1.save()
 
   const employee2 = new Employee({
     firstName: 'Bumbiss',
     lastName: 'Kunbist',
-    isCurrent: false
+    currentStatus: 'Past Employee'
   })
   await employee2.save()
 
