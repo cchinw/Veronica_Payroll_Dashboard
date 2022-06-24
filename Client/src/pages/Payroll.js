@@ -1,18 +1,32 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router'
-import { Container, Divider, Button, Box } from '@mui/material'
+import {
+  Container,
+  Divider,
+  Button,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  ButtonGroup
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
-import { DataGrid } from '@mui/x-data-grid'
-import { GridColDef } from '@mui/x-data-grid'
 
 const Payroll = (props) => {
   let navigate = useNavigate()
 
+  const [week, setWeek] = useState(25)
+  const [year, setYear] = useState(new Date().getFullYear())
+  const [payrolls, setPayrolls] = useState(null)
+
   const getAllPayroll = async () => {
-    let res = await axios.get(`${props.BASE_URL}/payroll`)
-    props.setPayroll(res.data)
-    console.log(res.data, ' All Payroll')
+    let res = await axios.get(
+      `${props.BASE_URL}/payroll/week/${week}/year/${year}`
+    )
+    setPayrolls(res.data)
   }
 
   useEffect(() => {
@@ -38,36 +52,101 @@ const Payroll = (props) => {
     setPayrollFormFields(payroll)
   }
 
+  const handleWeekChange = (e) => {
+    setWeek(e.target.value)
+  }
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value)
+  }
+  console.log(payrolls, 'Payrolls')
   return (
-    <div className="payroll">
-      <h1>PAYROLL</h1>
-      <div>
-        <Button
-          onClick={() => {
-            navigate('/employee')
-          }}
-        >
-          <AccountBalanceIcon />
-          Create New Payroll
-        </Button>
-      </div>
-      <Container>
-        {props.payroll &&
-          props.payroll.map((pay) => (
+    <Box sx={{ minWidth: 275 }}>
+      <Card variant="outlined">
+        <CardContent>
+          <Typography variant="h5" component="div">
+            PAYROLL
+          </Typography>
+          <Typography variant="h4" component="div">
+            <Button
+              size="medium"
+              onClick={() => {
+                navigate('/dashboard')
+              }}
+            >
+              <AccountBalanceIcon />
+              Create New Payroll
+            </Button>
+          </Typography>
+          <Typography variant="body">
             <Container>
               <Divider />
-              <div key={pay.id} onClick={() => navigate(`payroll/${pay._id}`)}>
-                <h4>Employee Id: {pay.employeeId}</h4>
-                <h4>Hours Worked (per week): {pay.weeklyHours}</h4>
-                <h4>Gross Amount: {pay.grossAmount} </h4>
-                <h4>Taxes: {pay.taxes}</h4>
-                <h4>Net Amount Paid per week: {pay.netAmount} </h4>
+              <div>
+                <table>
+                  <tr>
+                    <th>
+                      Week
+                      <input
+                        type="text"
+                        min={1}
+                        max={53}
+                        value={week}
+                        onChange={handleWeekChange}
+                      />
+                      Year
+                      <input
+                        type="text"
+                        value={year}
+                        onChange={handleYearChange}
+                      />
+                    </th>
+                    <Divider />
+                    <th>Current Employee</th>
+                    <Divider />
+                    <th>Hours Worked (per week)</th>
+                    <Divider />
+                    <th>Hours Worked (per week)</th>
+                    <Divider />
+                    <th>Gross Amount</th>
+                    <Divider />
+                    <th>Taxes</th>
+                    <Divider />
+                    <th>Net Amount</th>
+                    <Divider />
+                  </tr>
+
+                  <tr>
+                    {payrolls &&
+                      payrolls.map((payroll) => (
+                        <tr>
+                          <th>
+                            {payroll.employee.firstName}{' '}
+                            {payroll.employee.lastName}
+                          </th>
+                          <th>{payroll.employee.isCurrent.toString()}</th>
+                          <th>{payroll.weeklySchedule.totalHours}</th>
+                          <th>{payroll.payroll.grossAmount}</th>
+                          <th>{payroll.tax.taxPercentage}%</th>
+                          <th>{payroll.payroll.netAmount}</th>
+                        </tr>
+                      ))}
+                  </tr>
+                </table>
               </div>
+              <ButtonGroup>
+                <Button>
+                  <DeleteIcon />
+                </Button>
+                <Button>
+                  <EditIcon />
+                </Button>
+              </ButtonGroup>
               <Divider />
             </Container>
-          ))}
-      </Container>
-    </div>
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
   )
 }
 

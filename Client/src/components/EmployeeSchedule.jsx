@@ -19,33 +19,31 @@ const EmployeeSchedule = ({ employeeId, date, row, col, times, setTimes }) => {
   const handleChangeStart = (e) => {
     setStartTime(e.target.value)
     let temp = times
-    let hours = temp[row][col].endTime - temp[row][col].startTime
+    let hours = parseInt(temp[row][col].endTime) - parseInt(e.target.value)
     if (hours < 0) hours = 0
     temp[row][col] = {
       ...temp[row][col],
       startTime: e.target.value,
-      hours,
+      hours: hours,
       employeeId: employeeId,
       day: date
     }
     setTimes(temp)
-    console.log(times)
   }
 
   const handleChangeEnd = (e) => {
     setEndTime(e.target.value)
     let temp = times
-    let hours = temp[row][col].endTime - temp[row][col].startTime
+    let hours = parseInt(e.target.value) - parseInt(temp[row][col].startTime)
     if (hours < 0) hours = 0
     temp[row][col] = {
       ...temp[row][col],
       endTime: e.target.value,
-      hours,
+      hours: hours,
       employeeId: employeeId,
       day: date
     }
     setTimes(temp)
-    console.log(times)
   }
 
   return (

@@ -10,20 +10,11 @@ const CreateSchedule = (props) => {
 
   const [dayOfWeek, setDayOfWeek] = useState(null)
   const [week, setWeek] = useState(25)
+  const [year, setYear] = useState(new Date().getFullYear())
   const [times, setTimes] = useState(null)
 
-  function getDateOfWeek(w, y) {
-    let daysOfWeek = []
-    for (let i = 1; i <= 7; i++) {
-      let d = i + 1 + (w - 1) * 7
-      let date = new Date(y, 0, d)
-      daysOfWeek.push(date)
-    }
-    return daysOfWeek
-  }
-
   useEffect(() => {
-    setDayOfWeek(getDateOfWeek(week, 2022))
+    setDayOfWeek(getDateOfWeek(week, year))
 
     setTimes(
       new Array(props.allEmployees.length).fill(0).map(() =>
@@ -39,10 +30,19 @@ const CreateSchedule = (props) => {
     updateTimes()
   }, [week, props.allEmployees])
 
+  function getDateOfWeek(w, y) {
+    let daysOfWeek = []
+    for (let i = 1; i <= 7; i++) {
+      let d = i + 1 + (w - 1) * 7
+      let date = new Date(y, 0, d)
+      daysOfWeek.push(date)
+    }
+    return daysOfWeek
+  }
+
   const updateTimes = () => {
     if (times && props.allEmployees) {
       let temp = times
-      console.log(temp, 'TEMPs')
       for (let i = 0; i < temp.length; i++) {
         for (let j = 0; j < temp[0].length; j++) {
           temp[i][j] = {
@@ -56,7 +56,25 @@ const CreateSchedule = (props) => {
     }
   }
 
-  console.log(times, 'times')
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const data = {
+      week: week,
+      year: year,
+      schedule: times
+    }
+    const res = await axios.post(`${props.BASE_URL}/schedule/`, data)
+    navigate('/schedules')
+  }
+
+  const handleWeekChange = (e) => {
+    setWeek(e.target.value)
+  }
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value)
+  }
+
   return (
     <div className="create-schedule">
       <Button onClick={() => navigate('/schedules')}>
@@ -75,7 +93,18 @@ const CreateSchedule = (props) => {
       <Container>
         <table>
           <tr>
-            <th>Employee</th>
+            <th>
+              Week
+              <input
+                type="text"
+                min={1}
+                max={53}
+                value={week}
+                onChange={handleWeekChange}
+              />
+              Year
+              <input type="text" value={year} onChange={handleYearChange} />
+            </th>
             {dayOfWeek &&
               dayOfWeek.map((date) => <th>{date.toString().slice(0, 10)} </th>)}
           </tr>
@@ -100,7 +129,7 @@ const CreateSchedule = (props) => {
               </tr>
             ))}
         </table>
-        <Button>Create Weekly Schedule</Button>
+        <Button onClick={handleSubmit}>Create Weekly Schedule</Button>
       </Container>
     </div>
   )

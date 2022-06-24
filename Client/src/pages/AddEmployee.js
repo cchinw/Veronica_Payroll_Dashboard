@@ -48,7 +48,9 @@ const AddEmployee = (props) => {
         `${props.BASE_URL}/employee`,
         employeeData
       )
+      console.log(rate, 'RATTTEEEE')
       setRate({ ...rate, employeeId: employeeRes.data._id })
+      await setEmployeeRate()
     }
 
     const setEmployeeRate = async () => {
@@ -57,7 +59,7 @@ const AddEmployee = (props) => {
 
     e.preventDefault()
     await addNewEmployee()
-    await setEmployeeRate()
+
     setEmployeeFormValues({
       firstName: '',
       lastName: '',
