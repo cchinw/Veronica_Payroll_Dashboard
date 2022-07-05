@@ -23,8 +23,12 @@ const Payroll = (props) => {
   const [payrolls, setPayrolls] = useState(null)
 
   const getAllPayroll = async () => {
+    console.log(
+      `http://localhost:3001/api/payroll/week/${week}/year/${year}`,
+      'BASE URLLLL'
+    )
     let res = await axios.get(
-      `${props.BASE_URL}/payroll/week/${week}/year/${year}`
+      `http://localhost:3001/api/payroll/week/${week}/year/${year}`
     )
     setPayrolls(res.data)
   }

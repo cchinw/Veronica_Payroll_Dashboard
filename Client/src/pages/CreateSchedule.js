@@ -7,7 +7,15 @@ import EmployeeSchedule from '../components/EmployeeSchedule'
 
 const CreateSchedule = (props) => {
   let navigate = useNavigate()
-
+  const temp = new Array(props.allEmployees.length).fill(0).map(() =>
+    new Array(7).fill({
+      employeeId: null,
+      day: null,
+      startTime: 0,
+      endTime: 0,
+      hours: 0
+    })
+  )
   const [dayOfWeek, setDayOfWeek] = useState(null)
   const [week, setWeek] = useState(25)
   const [year, setYear] = useState(new Date().getFullYear())
@@ -15,18 +23,7 @@ const CreateSchedule = (props) => {
 
   useEffect(() => {
     setDayOfWeek(getDateOfWeek(week, year))
-
-    setTimes(
-      new Array(props.allEmployees.length).fill(0).map(() =>
-        new Array(7).fill({
-          employeeId: null,
-          day: null,
-          startTime: 0,
-          endTime: 0,
-          hours: 0
-        })
-      )
-    )
+    setTimes(temp)
     updateTimes()
   }, [week, props.allEmployees])
 

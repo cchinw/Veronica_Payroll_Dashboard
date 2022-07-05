@@ -4,17 +4,14 @@ import { useNavigate } from 'react-router'
 import { Button, Container } from '@mui/material'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
 import Divider from '@mui/material/Divider'
-import CreateSchedule from './CreateSchedule'
 
 const AddEmployee = (props) => {
   let navigate = useNavigate()
 
   const [employeeFormValues, setEmployeeFormValues] = useState({
     firstName: '',
-    lastName: '',
-    currentStatus: ''
+    lastName: ''
   })
   const [rate, setRate] = useState({
     employeeId: '',
@@ -40,8 +37,7 @@ const AddEmployee = (props) => {
     const addNewEmployee = async () => {
       const employeeData = {
         firstName: employeeFormValues.firstName,
-        lastName: employeeFormValues.lastName,
-        currentStatus: employeeFormValues.currentStatus
+        lastName: employeeFormValues.lastName
       }
 
       const employeeRes = await axios.post(
@@ -49,26 +45,12 @@ const AddEmployee = (props) => {
         employeeData
       )
       console.log(rate, 'RATTTEEEE')
-      setRate({ ...rate, employeeId: employeeRes.data._id })
-      await setEmployeeRate()
+      const payrate = { ...rate, employeeId: employeeRes.data._id }
+      console.log(payrate, 'PAYRATE EMPLOYEE ID')
+      await axios.post(`${props.BASE_URL}/payrate`, payrate)
     }
-
-    const setEmployeeRate = async () => {
-      const payRate = await axios.post(`${props.BASE_URL}/payrate`, rate)
-    }
-
-    e.preventDefault()
     await addNewEmployee()
-
-    setEmployeeFormValues({
-      firstName: '',
-      lastName: '',
-      currentStatus: ''
-    })
-    setRate({
-      employeeId: '',
-      hourlyRate: 0
-    })
+    props.getEmployees()
     navigate('/employees')
   }
 
@@ -110,7 +92,7 @@ const AddEmployee = (props) => {
               />
             </div>
             <Divider />
-            <div className="input-wrapper">
+            {/* <div className="input-wrapper">
               <label for="status">Current Status: </label>
               <select
                 onChange={handleEmployeeChange}
@@ -121,8 +103,9 @@ const AddEmployee = (props) => {
                 <option>Current Employee</option>
                 <option>Past Employee</option>
               </select>
-            </div>
+            </div> */}
             <div className="input-wrapper">
+              Rate:
               <input
                 onChange={handleRateChange}
                 type="number"

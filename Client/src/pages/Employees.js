@@ -12,6 +12,7 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Container } from '@mui/system'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import { useEffect } from 'react'
 
 export default function Employees(props) {
   let navigate = useNavigate()
@@ -20,6 +21,8 @@ export default function Employees(props) {
     const res = await axios.delete(`${props.BASE_URL}/employee/${employeeId}`)
     props.getEmployees()
   }
+
+  useEffect(() => {}, [])
 
   return (
     <Box sx={{ minWidth: 275 }}>

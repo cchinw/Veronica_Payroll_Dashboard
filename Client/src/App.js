@@ -123,7 +123,9 @@ function App() {
           />
           <Route
             path="employee"
-            element={<AddEmployee BASE_URL={BASE_URL} />}
+            element={
+              <AddEmployee BASE_URL={BASE_URL} getEmployees={getEmployees} />
+            }
           />
           <Route
             path="schedule"
