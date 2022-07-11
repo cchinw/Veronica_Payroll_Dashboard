@@ -32,7 +32,8 @@ const getEmployeeById = async (req, res) => {
 
 const addEmployee = async (req, res) => {
   try {
-    const employee = await new Employee(req.body)
+    console.log(req.body, 'REQUEST BODY EMPLOYEE')
+    const employee = new Employee(req.body)
     await employee.save()
     return res.status(201).json(employee)
   } catch (error) {
@@ -42,7 +43,8 @@ const addEmployee = async (req, res) => {
 
 const createPayRate = async (req, res) => {
   try {
-    const payrate = await new PayRate(req.body)
+    console.log(req.body, 'PAYRATE REQUEST BODY')
+    const payrate = new PayRate(req.body)
     await payrate.save()
     return res.status(201).json(payrate)
   } catch (error) {
