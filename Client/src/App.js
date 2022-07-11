@@ -48,7 +48,7 @@ function App() {
       <main style={{ marginLeft: 'auto', marginRight: 0 }}>
         <Routes>
           <Route
-            index
+            path="/"
             element={
               <Dashboard
                 BASE_URL={BASE_URL}

@@ -5,14 +5,22 @@ const EmployeeSchedule = ({ employeeId, date, row, col, times, setTimes }) => {
   const [endTime, setEndTime] = useState(0)
 
   const updateTimes = () => {
-    let temp = times
-
-    temp[row][col] = { ...temp[row][col], employeeId: employeeId, day: date }
-    setTimes(temp)
+    if (times && times !== []) {
+      let temp = times
+      if (temp[row][col] !== undefined)
+        temp[row][col] = {
+          ...temp[row][col],
+          employeeId: employeeId,
+          day: date
+        }
+      setTimes(temp)
+    }
   }
 
   useEffect(() => {
-    if (times) updateTimes()
+    console.log(times, 'times')
+    // if (times !== []) updateTimes()
+    return updateTimes()
   }, [])
 
   const handleChangeStart = (e) => {
@@ -56,7 +64,8 @@ const EmployeeSchedule = ({ employeeId, date, row, col, times, setTimes }) => {
           value={startTime}
           placeholder="start time"
           onChange={(e) => handleChangeStart(e)}
-        />
+        />{' '}
+        AM
         <input
           type="number"
           name="endTime"
@@ -65,7 +74,8 @@ const EmployeeSchedule = ({ employeeId, date, row, col, times, setTimes }) => {
           value={endTime}
           placeholder="end time"
           onChange={(e) => handleChangeEnd(e)}
-        />
+        />{' '}
+        PM
       </th>
     </div>
   )

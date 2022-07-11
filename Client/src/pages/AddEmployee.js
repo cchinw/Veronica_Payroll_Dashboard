@@ -92,20 +92,8 @@ const AddEmployee = (props) => {
               />
             </div>
             <Divider />
-            {/* <div className="input-wrapper">
-              <label for="status">Current Status: </label>
-              <select
-                onChange={handleEmployeeChange}
-                name="currentStatus"
-                value={employeeFormValues.currentStatus}
-                required
-              >
-                <option>Current Employee</option>
-                <option>Past Employee</option>
-              </select>
-            </div> */}
             <div className="input-wrapper">
-              Rate:
+              Rate($):
               <input
                 onChange={handleRateChange}
                 type="number"

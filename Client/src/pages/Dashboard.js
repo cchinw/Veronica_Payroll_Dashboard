@@ -40,8 +40,8 @@ const Dashboard = (props) => {
             setSpecificPayroll={props.setSpecificPayroll}
           />
         </Paper>
-        <Paper onClick={() => navigate('/schedule')}>
-          <CreateSchedule
+        {/* <Paper onClick={() => navigate('/schedule')}>
+          <Schedules
             BASE_URL={props.BASE_URL}
             allEmployees={props.allEmployees}
             setAllEmployees={props.setAllEmployees}
@@ -50,7 +50,7 @@ const Dashboard = (props) => {
             allWeeklySchedule={props.allWeeklySchedule}
             setAllWeeklySchedule={props.setAllWeeklySchedule}
           />
-        </Paper>
+        </Paper> */}
       </Box>
     </Container>
   )
